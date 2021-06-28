@@ -1,0 +1,8 @@
+.navbar-fill-space {
+    flex: 1 1 auto;
+}
+
+header a {
+    text-decoration: none;
+    color: inherit;
+}

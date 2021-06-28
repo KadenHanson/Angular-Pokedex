@@ -1,0 +1,10 @@
+<div class="main-content">
+    <div class="container">
+        <mat-spinner *ngIf="!showList"></mat-spinner>
+        <div *ngIf="showList | async" fxLayoutAlign="center" fxLayout="row wrap" fxLayout.xs="column wrap">
+            <div class="pokemon-card-container" *ngFor="let _pokemon of pokemonList; let i = index">
+                <pokemon-card [pokemon]="_pokemon"></pokemon-card>
+            </div>
+        </div>
+    </div>
+</div>

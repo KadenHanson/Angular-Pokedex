@@ -1,0 +1,15 @@
+<a [routerLink]="['pokemon-details/', pokemon.name]">
+    <mat-card class="pokemon-card">
+        <mat-card-header>
+            <mat-card-title>{{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}}</mat-card-title>
+            <span class="dexNo">#{{pokemon.dexNumber}}</span>
+        </mat-card-header>
+        <div class="pokemon-sprite">
+            <img src="{{backgroundImage}}" />
+        </div>
+        <mat-card-content>
+            <span class="pokemon-type type-1 {{pokemon.type1}}">{{pokemon.type1}}</span>
+            <span class="pokemon-type type-2 {{pokemon.type2}}" *ngIf="showSecondType">{{pokemon.type2}}</span>
+        </mat-card-content>
+    </mat-card>
+</a>

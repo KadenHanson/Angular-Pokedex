@@ -1,0 +1,26 @@
+a {
+    text-decoration: none;
+}
+
+a:hover mat-card {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.mat-card-header .dexNo {
+    margin-left: auto;
+}
+
+::ng-deep .mat-card-header-text {
+    margin: 0px !important;
+}
+
+.pokemon-sprite {
+    height: 250px;
+    width: 100%;
+}
+
+.pokemon-sprite img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+}

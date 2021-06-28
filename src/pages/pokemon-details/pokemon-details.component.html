@@ -1,0 +1,28 @@
+<div>
+    <mat-spinner *ngIf="!showInfo"></mat-spinner>
+    <div *ngIf="showInfo | async">
+        <div class="pokemon-details-container">
+            <mat-card>
+                <div class="container">
+                    <div fxFlex="flex">
+                        <h1 class="pokemon-name">
+                            #{{pokemon.id.toString().length == 1 ? '00' : (pokemon.id.toString().length == 2 ? '0' : '')}}{{pokemon.id}} -
+                            {{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}}
+                        </h1>
+                        <div class="pokemon-types">
+                            <div class="pokemon-type type-1 {{pokemon.types[0].type.name}}">{{pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1)}}</div>
+                            <div *ngIf="pokemon.types[1] !== undefined" class="pokemon-type type-2 {{pokemon.types[1].type.name}}">{{pokemon.types[1].type.name.charAt(0).toUpperCase() + pokemon.types[1].type.name.slice(1)}}</div>
+                        </div>
+                        <div class="pokemon-sprites">
+                            <img [src]="pokemonNormalSpriteURL" (error)="sprite_1.src = pokemon.sprites.front_default; sprite_1.width = 225" alt="{{pokemon.name}}_normal_sprite" #sprite_1 />
+                            <img [src]="pokemonShinySpriteURL" (error)="sprite_2.src = pokemon.sprites.front_shiny; sprite_2.width = 225" alt="{{pokemon.name}}_shiny_sprite" #sprite_2 />
+                        </div>
+                    </div>
+                    <div fxFlex="flex">
+                        Test
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

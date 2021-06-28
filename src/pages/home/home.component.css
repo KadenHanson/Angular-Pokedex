@@ -1,0 +1,31 @@
+.main-content {
+    padding: 20px;
+}
+
+a {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.pokemon-card-container {
+    width: calc(33% - 50px);
+    margin: 10px;
+    max-width: 300px;
+}
+
+mat-spinner {
+    margin: 100px auto 0px auto;
+}
+
+@media screen and (max-width: 850px) {
+    .pokemon-card-container {
+        width: calc(50% - 60px);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .pokemon-card-container {
+        width: auto;
+        max-width: unset;
+    }
+}
