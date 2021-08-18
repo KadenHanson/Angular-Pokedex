@@ -42,4 +42,7 @@ export class HomeComponent implements OnInit {
         this.displayPokemon();
     }
 
+    updateScrollPos(e) {
+        console.log(e);
+    }
 }

@@ -14,6 +14,7 @@ import { PokemonCardComponent } from '../components/pokemon-card/pokemon-card.co
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpLinkModule } from 'apollo-angular-link-http';
+import {ScrollTracker} from './ScrollTracker.directive';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { HttpLinkModule } from 'apollo-angular-link-http';
         FooterComponent,
         HomeComponent,
         PokemonCardComponent,
-        PokemonDetailsComponent
+        PokemonDetailsComponent,
+        ScrollTracker
     ],
     imports: [
         BrowserModule,
