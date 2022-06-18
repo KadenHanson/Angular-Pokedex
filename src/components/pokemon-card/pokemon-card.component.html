@@ -1,4 +1,4 @@
-<a [routerLink]="['pokemon-details/', pokemon.name]">
+<a (click)="setScrollPosition()" [routerLink]="['pokemon-details/', pokemon.name]">
     <mat-card class="pokemon-card">
         <mat-card-header>
             <mat-card-title>{{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}}</mat-card-title>

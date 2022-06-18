@@ -19,4 +19,7 @@ export class PokemonCardComponent implements OnInit {
         this.backgroundImage = this.utilities.resolveImgUrl(this.pokemon.dexNumber, false);
     }
 
+    setScrollPosition() {
+        this.utilities.setHomeScrollPosition(window.scrollY);
+    }
 }

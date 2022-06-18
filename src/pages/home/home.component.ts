@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { RetrievePokemonService } from '../../services/retrieve-pokemon-service/retrieve-pokemon.service';
 import { UtilitiesService } from '../../services/utilities-service/utilities.service';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
     selector: 'app-home',
@@ -21,36 +22,36 @@ export class HomeComponent implements OnInit {
     }
     pokemonList: any = [];
     showList: Promise<boolean>;
-    offset: number = 0;
     canScroll: boolean = true;
+    shouldLoadPreviousData: boolean;
 
-    constructor(private retrievePokemonService: RetrievePokemonService, private utilities: UtilitiesService) { }
+    constructor(
+        private retrievePokemonService: RetrievePokemonService,
+        private utilitiesService: UtilitiesService,
+        private viewPortScroller: ViewportScroller
+    ) { }
 
     displayPokemon() {
-        let currentOffset = this.offset;
-        this.offset = this.offset + 50;
-
-        this.retrievePokemonService.getPokemonList(currentOffset).subscribe(res => {
-            const results = res.results;
-            const pokemonResults = this.pokemonList;
-
-            results.map(pokemonData => {
-                const newPokemonData = {
-                    name: pokemonData.name,
-                    url: pokemonData.url,
-                    dexNumber: this.utilities.resolveDexNumber(pokemonData.url),
-                    types: ['', '']
-                };
-
-                pokemonResults.push(newPokemonData);
-            });
-            this.pokemonList = pokemonResults;
+        this.retrievePokemonService.getPokemonListForHome(this.shouldLoadPreviousData).then((res: any) => {
+            this.pokemonList = res;
             this.showList = Promise.resolve(true);
             this.canScroll = true;
+            this.shouldLoadPreviousData = false;
         });
     }
 
     ngOnInit() {
+        this.shouldLoadPreviousData = this.retrievePokemonService.getLoadedPokemonLength() > 0;
         this.displayPokemon();
+    }
+
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.viewPortScroller.scrollToPosition([0,this.utilitiesService.getHomeScrollPosition()]);
+        }, 10);
+    }
+
+    ngOnDestroy() {
+        this.shouldLoadPreviousData = false;
     }
 }
