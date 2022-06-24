@@ -14,7 +14,7 @@ interface PokemonHomeData {
     providedIn: 'root'
 })
 export class RetrievePokemonService {
-    private baseUrl: string = 'https://pokeapi.co/api/v2/pokemon/';
+    private baseUrl: string = 'https://pokeapi.co/api/v2/pokemon';
     public offset: number = -50;
     public pokemonHomeResults = [];
 
@@ -22,7 +22,11 @@ export class RetrievePokemonService {
     }
 
     getPokemon(selector: any): any {
-        return this.http.get(`${this.baseUrl}${selector}`);
+        return this.http.get(`${this.baseUrl}/${selector}`);
+    }
+
+    getAllPokemon() {
+        return this.http.get(`${this.baseUrl}?limit=898`);
     }
 
     async getPokemonListForHome(loadPrevData: boolean): Promise<any> {
@@ -55,5 +59,9 @@ export class RetrievePokemonService {
 
     getLoadedPokemonLength() {
         return this.pokemonHomeResults.length;
+    }
+
+    getPokemonSpeciesInfo(pokemonName: string) {
+        return this.http.get(`${this.baseUrl}-species/${pokemonName}`);
     }
 }

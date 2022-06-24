@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,8 @@ import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpLinkModule } from 'apollo-angular-link-http';
 import {ScrollTracker} from './ScrollTracker.directive';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
     declarations: [
@@ -42,9 +45,18 @@ import {ScrollTracker} from './ScrollTracker.directive';
         FlexLayoutModule,
         GraphQLModule,
         HttpClientModule,
-        HttpLinkModule
+        HttpLinkModule,
+        FormsModule,
+        FontAwesomeModule
     ],
     providers: [],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    constructor(library: FaIconLibrary) {
+        library.addIcons(
+            faMars,
+            faVenus
+        );
+    }
+}

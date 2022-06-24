@@ -32,12 +32,14 @@ export class HomeComponent implements OnInit {
     ) { }
 
     displayPokemon() {
-        this.retrievePokemonService.getPokemonListForHome(this.shouldLoadPreviousData).then((res: any) => {
-            this.pokemonList = res;
-            this.showList = Promise.resolve(true);
-            this.canScroll = true;
-            this.shouldLoadPreviousData = false;
-        });
+        if (this.pokemonList.length < 898) {
+            this.retrievePokemonService.getPokemonListForHome(this.shouldLoadPreviousData).then((res: any) => {
+                this.pokemonList = res;
+                this.showList = Promise.resolve(true);
+                this.canScroll = true;
+                this.shouldLoadPreviousData = false;
+            });
+        }
     }
 
     ngOnInit() {
