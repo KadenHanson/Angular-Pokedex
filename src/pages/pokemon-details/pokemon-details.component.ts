@@ -1,26 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FlavorTextEntry, PokemonDetails } from 'src/models/pokemon/pokemon-details.model';
 import { RetrievePokemonService } from 'src/services/retrieve-pokemon-service/retrieve-pokemon.service';
 import { UtilitiesService } from 'src/services/utilities-service/utilities.service';
-
-interface PokemonDetails {
-    id: number;
-    name: string;
-    types: PokemonType[];
-    sprites: PokemonSprites;
-}
-
-interface PokemonType {
-    type: {
-        name: string;
-        url: string;
-    }
-}
-
-interface PokemonSprites {
-    front_default: string;
-    front_shiny: string;
-}
 
 @Component({
     selector: 'app-pokemon-details',
@@ -38,6 +20,8 @@ export class PokemonDetailsComponent implements OnInit {
     hasGenderDifferences = true;
     male = true;
     female = false;
+    selectedTextIndex = 0;
+    selectedFlavorText = '';
 
     constructor(
         private router: Router,
@@ -52,17 +36,41 @@ export class PokemonDetailsComponent implements OnInit {
                 id: _pokemon.id,
                 name: _pokemon.name,
                 types: _pokemon.types,
-                sprites: _pokemon.sprites
+                sprites: _pokemon.sprites,
+                flavorTexts: []
             } as PokemonDetails;
             this.pokemonNormalSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, false);
             this.pokemonShinySpriteURL = this.utilities.resolveImgUrl(_pokemon.id, true);
             this.pokemonNormalFemaleSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, false, 'F');
             this.pokemonShinyFemaleSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, true, 'F');
-            this.showInfo = Promise.resolve(true);
         });
         this.retrievePokemonService.getPokemonSpeciesInfo(this.pokemonName).subscribe((res: any) => {
             this.hasGenderDifferences = res.has_gender_differences;
+            this.pokemon.flavorTexts = this.getFlavorTextEntries(this.mapEntries(res.flavor_text_entries));
+            this.showInfo = Promise.resolve(true);
         });
+    }
+
+    mapEntries(entries: object[]) {
+        var mappedEntries: FlavorTextEntry[] = [];
+        entries.map((e: any) => {
+            mappedEntries.push({
+                flavorText: e.flavor_text,
+                language: e.language,
+                version: e.version
+            } as FlavorTextEntry)
+        });
+        return mappedEntries;
+    }
+
+    getFlavorTextEntries(entries: FlavorTextEntry[]) {
+        if (entries !== undefined) {
+            var englishEntries: FlavorTextEntry[] = entries.filter((x: FlavorTextEntry) => x.language.name === "en");
+            return englishEntries;
+        } else {
+            return [];
+        }
+        
     }
 
     updateGender(gender: string) {
@@ -73,5 +81,18 @@ export class PokemonDetailsComponent implements OnInit {
             this.female = true;
             this.male = false;
         }
+    }
+
+    switchText(entry: number) {
+        this.selectedTextIndex = entry;
+        this.selectedFlavorText = this.pokemon.flavorTexts[entry].flavorText.replace(/\n/g, ' ').replace(/\f/g, ' ');
+    }
+
+    fixVersionName(version: string) {
+        var fixedName = version.replace(/-/g, ' ');
+        fixedName = fixedName.split(' ')
+            .map((t) => t.charAt(0).toUpperCase() + t.substring(1).toLowerCase())
+            .join(' ');
+        return fixedName;
     }
 }

@@ -77,6 +77,12 @@ h3 {
     color: white;
 }
 
+.version-select {
+    margin-bottom: 10px;
+    padding: 3px;
+    outline: none;
+}
+
 mat-spinner {
     margin: 100px auto 0px auto;
 }

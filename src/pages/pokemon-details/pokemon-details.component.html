@@ -32,7 +32,15 @@
                         </div>
                     </div>
                     <div fxFlex="flex">
-                        Test
+                        <h2>Description</h2>
+                        <select class="version-select" (change)="switchText($event.target.value)">
+                            <option>-- Select Game --</option>
+                            <option *ngFor="let flavorText of pokemon.flavorTexts; let i = index" value="{{i}}">
+                                {{fixVersionName(flavorText.version.name)}}
+                            </option>
+                        </select>
+                        <br>
+                        <span class="flavor-text">{{selectedFlavorText}}</span>
                     </div>
                 </div>
             </mat-card>
