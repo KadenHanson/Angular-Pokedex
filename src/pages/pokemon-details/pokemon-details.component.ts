@@ -31,23 +31,37 @@ export class PokemonDetailsComponent implements OnInit {
 
     ngOnInit() {
         this.pokemonName = this.router.url.substring(this.router.url.indexOf('pokemon-details/') + ('pokemon-details/').length, this.router.url.length);
-        this.retrievePokemonService.getPokemon(this.pokemonName).subscribe((_pokemon: any) => {
-            this.pokemon = {
-                id: _pokemon.id,
-                name: _pokemon.name,
-                types: _pokemon.types,
-                sprites: _pokemon.sprites,
-                flavorTexts: []
-            } as PokemonDetails;
-            this.pokemonNormalSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, false);
-            this.pokemonShinySpriteURL = this.utilities.resolveImgUrl(_pokemon.id, true);
-            this.pokemonNormalFemaleSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, false, 'F');
-            this.pokemonShinyFemaleSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, true, 'F');
+        this.retrievePokemonService.getPokemon(this.pokemonName).subscribe({
+            next: (_pokemon: any) => {
+                this.pokemon = {
+                    id: _pokemon.id,
+                    name: _pokemon.name,
+                    types: _pokemon.types,
+                    sprites: _pokemon.sprites,
+                    flavorTexts: []
+                } as PokemonDetails;
+                this.pokemonNormalSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, false);
+                this.pokemonShinySpriteURL = this.utilities.resolveImgUrl(_pokemon.id, true);
+                this.pokemonNormalFemaleSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, false, 'F');
+                this.pokemonShinyFemaleSpriteURL = this.utilities.resolveImgUrl(_pokemon.id, true, 'F');
+            },
+            complete: () => {
+                this.getSpeciesInfo();
+            }
         });
-        this.retrievePokemonService.getPokemonSpeciesInfo(this.pokemonName).subscribe((res: any) => {
-            this.hasGenderDifferences = res.has_gender_differences;
-            this.pokemon.flavorTexts = this.getFlavorTextEntries(this.mapEntries(res.flavor_text_entries));
-            this.showInfo = Promise.resolve(true);
+    }
+
+    getSpeciesInfo() {
+        this.retrievePokemonService.getPokemonSpeciesInfo(this.pokemonName).subscribe({
+            next: (res: any) => {
+                if (res) {
+                    this.hasGenderDifferences = res.has_gender_differences;
+                    this.pokemon.flavorTexts = this.getFlavorTextEntries(this.mapEntries(res.flavor_text_entries));
+                }
+            },
+            complete: () => {
+                this.showInfo = Promise.resolve(true);
+            }
         });
     }
 
